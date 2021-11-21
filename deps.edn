@@ -1,0 +1,4 @@
+{:paths   ["src"]
+ :aliases {:test
+           {:extra-paths ["test"]
+            :extra-deps  {nubank/matcher-combinators {:mvn/version "3.3.1"}}}}}
