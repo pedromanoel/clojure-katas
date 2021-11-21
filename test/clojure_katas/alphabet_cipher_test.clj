@@ -1,6 +1,6 @@
-(ns clojure-katas.main-test
+(ns clojure-katas.alphabet-cipher-test
   (:require [clojure.test :refer :all]
-            [clojure-katas.main :refer :all]
+            [clojure-katas.alphabet-cipher :refer :all]
             [matcher-combinators.test :refer [match?]]))
 
 (deftest row-test

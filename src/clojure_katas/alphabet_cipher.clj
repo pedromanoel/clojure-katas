@@ -1,4 +1,4 @@
-(ns clojure-katas.main)
+(ns clojure-katas.alphabet-cipher)
 
 (defn repeat-keyword [keyword char-count]
   (->> (cycle keyword)
