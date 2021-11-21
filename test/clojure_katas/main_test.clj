@@ -1,11 +1,23 @@
 (ns clojure-katas.main-test
   (:require [clojure.test :refer :all]
+            [clojure-katas.main :refer :all]
             [matcher-combinators.test :refer [match?]]))
 
-(defn repeat-keyword [keyword char-count]
-  (->> (cycle keyword)
-       (take char-count)
-       (apply str)))
+(deftest row-test
+  (is (match? {\a "a" \b "b" \c "c"}
+              (row \a "abc")))
+
+  (is (match? {\a "b" \b "c" \c "a"}
+              (row \b "abc")))
+
+  (is (match? {\a "c" \b "a" \c "b"}
+              (row \c "abc"))))
+
+(deftest substitution-table-test
+  (is (match? {\a {\a "a" \b "b" \c "c"}
+          \b {\a "b" \b "c" \c "a"}
+          \c {\a "c" \b "a" \c "b"}}
+         (substitution-table "abc"))))
 
 (deftest keyword-repeated-test
   (testing "repeat the keyword until a count is reached"
@@ -20,30 +32,6 @@
     (is (= "abcab"
            (repeat-keyword "abc" 5)))))
 
-(def substitution-table
-  {\s {\b "t"
-       \e "w"
-       \m "e"
-       \r "j"
-       \t "l"}
-   \c {\e "g"
-       \y "a"}
-   \o {\e "s"
-       \t "h"}
-   \n {\h "u"
-       \t "g"}
-   \e {\e "i"
-       \m "q"}})
-
-(defn encode [keyword text substitution-table]
-  (let [keyword-repeated (repeat-keyword keyword (count text))]
-    {:keyword keyword-repeated
-     :text    text
-     :encoded (->> text
-                   (map (fn [a b] (get-in substitution-table [a b]))
-                        keyword-repeated)
-                   (reduce str ""))}))
-
 (deftest encode-test
   (is (= {:keyword "sconessconessco"
           :text    "meetmebythetree"
@@ -51,4 +39,4 @@
 
          (encode "scones"
                  "meetmebythetree"
-                 substitution-table))))
+                 (substitution-table "abcdefghijklmnopqrstuvwxyz")))))
